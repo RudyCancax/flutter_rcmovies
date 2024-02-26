@@ -1,14 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:card_swiper/card_swiper.dart';
 
-class CardSwiperScreen extends StatelessWidget {
-  const CardSwiperScreen({super.key});
+class CardSwiper extends StatelessWidget {
+  const CardSwiper({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final sizes = MediaQuery.of(context).size;
+
+    return SizedBox(
       width: double.infinity,
-      height: 400,
-      color: Colors.cyan,
+      height: sizes.height * 0.5,
+      child: Swiper(
+        itemCount: 5,
+        layout: SwiperLayout.STACK,
+        itemWidth: sizes.width * 0.6,
+        itemHeight: sizes.height * 0.45,
+        itemBuilder: (_, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, 'details');
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: const FadeInImage(
+                placeholder: AssetImage("assets/no-image.jpg"),
+                image: NetworkImage("https://via.placeholder.com/300x400"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

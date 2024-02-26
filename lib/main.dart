@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: Colors.blue[900],
               actionsIconTheme:
                   const IconThemeData(color: Colors.white, size: 30),
+              iconTheme: const IconThemeData(color: Colors.white),
               titleTextStyle: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,

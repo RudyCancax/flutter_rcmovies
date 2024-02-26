@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rc_movies/widgets/card_swiper.dart';
+import 'package:flutter_rc_movies/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,10 +13,10 @@ class HomeScreen extends StatelessWidget {
             IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
           ],
         ),
-        body: const Column(
-          children: [
-            CardSwiperScreen(),
-          ],
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [CardSwiper(), MovieSlider()],
+          ),
         ));
   }
 }
