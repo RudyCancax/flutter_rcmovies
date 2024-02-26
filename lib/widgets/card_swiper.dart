@@ -10,7 +10,7 @@ class CardSwiper extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: sizes.height * 0.4,
+      height: sizes.height * 0.45,
       child: Swiper(
         itemCount: 5,
         layout: SwiperLayout.STACK,
@@ -18,7 +18,7 @@ class CardSwiper extends StatelessWidget {
         itemHeight: sizes.height * 0.45,
         itemBuilder: (_, index) {
           return Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            padding: const EdgeInsets.only(top: 10, bottom: 5),
             child: GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, 'details');
