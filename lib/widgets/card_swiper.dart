@@ -10,23 +10,26 @@ class CardSwiper extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: sizes.height * 0.5,
+      height: sizes.height * 0.4,
       child: Swiper(
         itemCount: 5,
         layout: SwiperLayout.STACK,
         itemWidth: sizes.width * 0.6,
         itemHeight: sizes.height * 0.45,
         itemBuilder: (_, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, 'details');
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: const FadeInImage(
-                placeholder: AssetImage("assets/no-image.jpg"),
-                image: NetworkImage("https://via.placeholder.com/300x400"),
-                fit: BoxFit.cover,
+          return Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, 'details');
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: const FadeInImage(
+                  placeholder: AssetImage("assets/no-image.jpg"),
+                  image: NetworkImage("https://via.placeholder.com/300x400"),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           );
