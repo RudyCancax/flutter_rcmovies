@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MovieSlider extends StatelessWidget {
-  const MovieSlider({super.key});
+  final String movieCategory;
+  const MovieSlider({super.key, required this.movieCategory});
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +13,13 @@ class MovieSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 5, left: 10),
-            child: Text("Most popular",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+          Padding(
+            padding: const EdgeInsets.only(top: 5, left: 10),
+            child: Text(movieCategory,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                )),
           ),
           Expanded(
             child: ListView.builder(
@@ -41,7 +45,7 @@ class _MoviePoster extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, 'details', arguments: 'moviename');
+              Navigator.pushNamed(context, 'details', arguments: 'Avatar2');
             },
             child: const ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),

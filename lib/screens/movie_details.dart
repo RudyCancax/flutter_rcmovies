@@ -5,10 +5,13 @@ class MovieDeatilsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String movie =
+        ModalRoute.of(context)?.settings.arguments.toString() ?? 'no-movie';
+
     return Scaffold(
-      appBar: AppBar(title: const Text('MovieDeatils')),
-      body: const Center(
-        child: Text('MovieDeatilsScreen'),
+      // appBar: AppBar(title: const Text('MovieDeatils')),
+      body: Center(
+        child: Text(movie),
       ),
     );
   }
