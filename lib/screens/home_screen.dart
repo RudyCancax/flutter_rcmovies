@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_rc_movies/providers/movies_provider.dart';
 import 'package:flutter_rc_movies/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,6 +8,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moviesProvider = Provider.of<MoviesProvider>(context);
+
+    print(moviesProvider.displayingMovies);
+
     return Scaffold(
         appBar: AppBar(
           title: const Center(child: Text('Movies')),
@@ -13,11 +19,11 @@ class HomeScreen extends StatelessWidget {
             IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
           ],
         ),
-        body: const SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             children: [
-              CardSwiper(),
-              MovieSlider(movieCategory: "Most Populars"),
+              CardSwiper(movies: moviesProvider.displayingMovies),
+              const MovieSlider(movieCategory: "Most Populars"),
             ],
           ),
         ));
