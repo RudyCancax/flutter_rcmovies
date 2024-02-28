@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Movies RC',
         debugShowCheckedModeBanner: false,
         initialRoute: 'home',
         routes: {

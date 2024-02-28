@@ -33,9 +33,15 @@ class Movie {
     required this.voteCount,
   });
 
-  factory Movie.fromRawJson(String str) => Movie.fromJson(json.decode(str));
+  get fullPosterImg {
+    if (this.posterPath != null) {
+      return "https://image.tmdb.org/t/p/w500$posterPath";
+    }
 
-  String toRawJson() => json.encode(toJson());
+    return "https://developer.themoviedb.org/reference/keyword-movies";
+  }
+
+  factory Movie.fromRawJson(String str) => Movie.fromJson(json.decode(str));
 
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
         adult: json["adult"],

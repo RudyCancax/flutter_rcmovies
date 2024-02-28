@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rc_movies/models/models.dart';
 import 'package:flutter_rc_movies/widgets/widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -6,18 +7,17 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String movie =
-        ModalRoute.of(context)?.settings.arguments.toString() ?? 'no-movie';
+    final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
 
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-        const _CustomAppBar(),
+        _CustomAppBar(movie: movie),
         SliverList(
             delegate: SliverChildListDelegate([
-          const _PosterAndTitle(),
-          const _Overview(),
-          const CardCasting()
+          _PosterAndTitle(movie: movie),
+          _Overview(movie: movie),
+          CardCasting(movieID: movie.id.toString())
         ]))
       ],
     ));
@@ -25,7 +25,8 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class _CustomAppBar extends StatelessWidget {
-  const _CustomAppBar();
+  final Movie movie;
+  const _CustomAppBar({required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +42,18 @@ class _CustomAppBar extends StatelessWidget {
             width: double.infinity,
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.only(bottom: 15),
-            child: const Text("movie.title",
-                style: TextStyle(color: Colors.white))),
+            child: Text(
+              movie.title,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            )),
         centerTitle: true,
         titlePadding: const EdgeInsets.all(0),
-        background: const FadeInImage(
-          placeholder: AssetImage("assets/loading.gif"),
-          image: NetworkImage("https://via.placeholder.com/500x300"),
+        background: FadeInImage(
+          placeholder: const AssetImage("assets/loading.gif"),
+          image: NetworkImage(movie.fullPosterImg),
           fit: BoxFit.cover,
         ),
       ),
@@ -56,7 +62,9 @@ class _CustomAppBar extends StatelessWidget {
 }
 
 class _PosterAndTitle extends StatelessWidget {
-  const _PosterAndTitle();
+  final Movie movie;
+
+  const _PosterAndTitle({required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -64,28 +72,39 @@ class _PosterAndTitle extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(children: [
-        const ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          child: FadeInImage(
-              placeholder: AssetImage('assets/loading.gif'),
-              image: NetworkImage("https://via.placeholder.com/200x300"),
-              height: 200),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          child: GestureDetector(
+            onTap: () {
+              showModal(context, movie.fullPosterImg);
+            },
+            child: FadeInImage(
+                placeholder: const AssetImage('assets/loading.gif'),
+                image: NetworkImage(movie.fullPosterImg),
+                height: 180),
+          ),
         ),
         const SizedBox(
-          width: 20,
+          width: 10,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'movie.title',
-              style: textTheme.headlineSmall,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 150),
+              child: Text(
+                movie.title,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+              ),
             ),
             Text(
-              'movie.originaltitle',
+              movie.originalTitle,
               style: textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -97,7 +116,7 @@ class _PosterAndTitle extends StatelessWidget {
                   color: Colors.amber[800],
                 ),
                 Text(
-                  'movie.voteAverage',
+                  movie.voteAverage.toString(),
                   style: textTheme.bodySmall,
                 )
               ],
@@ -110,14 +129,51 @@ class _PosterAndTitle extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
-  const _Overview();
+  final Movie movie;
+  const _Overview({required this.movie});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: const Text(
-          "Sit commodo et officia sint dolor elit Lorem cillum officia ullamco. Aliquip aliquip commodo Lorem ipsum laborum adipisicing occaecat. Et eiusmod do consequat enim mollit mollit tempor mollit magna ut voluptate eiusmod. Tempor sit do labore reprehenderit tempor laborum velit voluptate tempor sit. Reprehenderit consequat exercitation dolor consequat anim non. Culpa ullamco labore aliquip ut anim dolore. Enim non incididunt eiusmod nostrud veniam proident et ad esse laboris sint exercitation dolor minim. Non commodo laboris culpa consequat labore nulla excepteur in.Cupidatat nostrud labore ex ipsum consequat. Et duis labore exercitation occaecat."),
+      child: Text(movie.overview),
     );
   }
+}
+
+void showModal(BuildContext context, String image) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        contentPadding: EdgeInsets.zero, // Remove default padding
+        content: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: SizedBox(
+            width: double.infinity, // Ensure full width
+            child: Stack(
+              children: [
+                FadeInImage(
+                  placeholder: const AssetImage('assets/no-image.jpg'),
+                  image: NetworkImage(image),
+                  fit: BoxFit.cover, // Ensure the image covers the entire area
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: IconButton(
+                    icon: const Icon(Icons.close,
+                        color: Colors.white, weight: 50),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

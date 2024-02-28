@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rc_movies/models/models.dart';
 
 class MovieSlider extends StatelessWidget {
+  final List<Movie> mostPopularMovies;
   final String movieCategory;
-  const MovieSlider({super.key, required this.movieCategory});
+
+  const MovieSlider(
+      {super.key,
+      required this.movieCategory,
+      required this.mostPopularMovies});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +30,9 @@ class MovieSlider extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => _MoviePoster(),
-              itemCount: 20,
+              itemBuilder: (_, index) =>
+                  _MoviePoster(movie: mostPopularMovies[index]),
+              itemCount: mostPopularMovies.length,
             ),
           )
         ],
@@ -35,6 +42,10 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
+  final Movie movie;
+
+  const _MoviePoster({required this.movie});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,13 +56,13 @@ class _MoviePoster extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, 'details', arguments: 'Avatar2');
+              Navigator.pushNamed(context, 'details', arguments: movie);
             },
-            child: const ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: FadeInImage(
-                placeholder: AssetImage("assets/no-image.jpg"),
-                image: NetworkImage("https://via.placeholder.com/300x400"),
+                placeholder: const AssetImage("assets/no-image.jpg"),
+                image: NetworkImage(movie.fullPosterImg),
                 height: 190,
                 width: 130,
                 fit: BoxFit.cover,
@@ -59,9 +70,9 @@ class _MoviePoster extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          const Text(
-            "Enim sit exercitation ut occaecat elit.",
-            style: TextStyle(fontWeight: FontWeight.w500),
+          Text(
+            movie.title,
+            style: const TextStyle(fontWeight: FontWeight.w500),
             maxLines: 2,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,

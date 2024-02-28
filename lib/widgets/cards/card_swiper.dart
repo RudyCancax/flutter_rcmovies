@@ -24,14 +24,14 @@ class CardSwiper extends StatelessWidget {
             padding: const EdgeInsets.only(top: 10, bottom: 5),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, 'details');
+                Navigator.pushNamed(context, 'details',
+                    arguments: movies[index]);
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: FadeInImage(
                   placeholder: const AssetImage("assets/no-image.jpg"),
-                  image: NetworkImage(
-                      "https://image.tmdb.org/t/p/w500/${movies[index].posterPath}"),
+                  image: NetworkImage("${movies[index].fullPosterImg}"),
                   fit: BoxFit.cover,
                 ),
               ),
